@@ -225,7 +225,7 @@ handle_event({call, {_Pid, Tag}=From}, auth, connected, #state{sock=Sock, mechs=
     case Mech:init() of
         {ok, Resp} ->
             ?debug("DBUS auth: !!!! sending initial data~n", []),
-            dbus_transport:send(Sock, << "AUTH EXTERNAL 353031", "\r\n" >>),
+            dbus_transport:send(Sock, << "AUTH EXTERNAL 30", "\r\n" >>),
             gen_statem:reply(From, {ok, {self(), Tag}}),
             {next_state, waiting_for_ok, State#state{waiting=[From], mechs=Rest}};
         {continue, Resp, MechState} ->
