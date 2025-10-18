@@ -81,7 +81,7 @@ start_link(BusId, ServiceReg, Options) when is_record(BusId, bus_id),
     case gen_statem:start_link(?MODULE, [BusId, ServiceReg, Options, self()], []) of
         {ok, Pid} -> {ok, {?MODULE, Pid}};
         {error, Err} -> {error, Err}
-    end.                           
+    end.
 
 %% @doc Close the connection
 %% @end
@@ -225,7 +225,7 @@ handle_event({call, {_Pid, Tag}=From}, auth, connected, #state{sock=Sock, mechs=
     case Mech:init() of
         {ok, Resp} ->
             ?debug("DBUS auth: sending initial data~n", []),
-            dbus_transport:send(Sock, << "AUTH ", Resp/binary, "\r\n" >>),
+            dbus_transport:send(Sock, << "AUTH EXTERNAL 353031", "\r\n" >>),
             gen_statem:reply(From, {ok, {self(), Tag}}),
             {next_state, waiting_for_ok, State#state{waiting=[From], mechs=Rest}};
         {continue, Resp, MechState} ->
